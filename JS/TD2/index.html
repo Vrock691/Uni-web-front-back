@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TD2</title>
+</head>
+<body>
+    <h1>TD2</h1>
+
+    <input type="text" id="input" onkeyup="newinput()">
+    <p id="result"></p>
+
+    <script>
+
+        function inverserChaine(chaine) {
+            let letters = Array.from(chaine);
+            return letters.reverse().join("");
+        }
+
+        function inverseMots(chaine) {
+            let reversed = "";
+            let mots = chaine.split(" ");
+            mots.forEach(mot => {
+                reversed += ` ${inverserChaine(mot)}`;
+            });
+            return reversed;
+        }
+
+        function newinput() {
+            document.getElementById("result").textContent = inverserChaine(document.getElementById("input").value)
+        }
+
+    </script>
+</body>
+</html>

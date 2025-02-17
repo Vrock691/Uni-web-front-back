@@ -32,7 +32,7 @@
             let error = "";
 
             // Vérification @
-            if (query.includes("@")) {
+            if (query.includes("@") && query.split("@").length == 2) {
                 const splitByAtSymbol = query.split("@");
                 const leftSide = splitByAtSymbol[0];
                 const rightSide = splitByAtSymbol[1];
@@ -78,7 +78,7 @@
                     error = "Pas de longueur correcte coté gauche";
                 }
             } else {
-                error = "Pas de @";
+                error = "Pas de @ ou trop de @";
             }
 
             document.getElementById("result").textContent = (isValid) ? "Email Valide" : "Email non valide : " + error;

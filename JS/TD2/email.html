@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email</title>
+</head>
+
+<body>
+    <h2>Email</h2>
+
+    <input type="text" id="input" onkeyup="check()">
+    <p id="result">Non valide</p>
+
+    <script>
+        // REGEX INTERDIT PAR LE SUJET
+        function checkForbiddenChars(allowedChars, query) {
+            let invalid = false;
+            for (let i = 0; i < query.split("").length; i++) {
+                const letter = query.split("")[i];
+                if (!allowedChars.split("").includes(letter)) {
+                    invalid = true;
+                }
+            }
+            return invalid;
+        }
+
+        function check() {
+            const query = document.getElementById('input').value;
+            let isValid = false;
+            let error = "";
+
+            // Vérification @
+            if (query.includes("@")) {
+                const splitByAtSymbol = query.split("@");
+                const leftSide = splitByAtSymbol[0];
+                const rightSide = splitByAtSymbol[1];
+
+                // Verification longueur coté gauche
+                if (leftSide.length >= 2 && leftSide.length <= 128) {
+
+                    // Vérification caractères
+                    if (checkForbiddenChars("abcdefghijklmnopqrstuvwxyz0123456789_-.", leftSide) == false) {
+
+                        // Vérification que la partie droite contient entre 2 et 5 morceaux séparées par des points
+                        const Rightparts = rightSide.split(".");
+                        if (Rightparts.length >= 2 && Rightparts.length <= 5) {
+
+                            // Vérification que les premières parties sont valides
+                            let partsValid = true;
+                            for (let i = 0; i < Rightparts.length; i++) {
+                                const part = Rightparts[i];
+
+                                if (i == Rightparts.length-1) {
+                                    if (checkForbiddenChars("abcdefghijklmnopqrstuvwxyz", part)) {
+                                        partsValid = false;
+                                    }
+                                } else {
+                                    if (checkForbiddenChars("abcdefghijklmnopqrstuvwxyz0123456789_-.", part)) {
+                                        partsValid = false;
+                                    }
+                                }
+                            }
+
+                            if (partsValid) {
+                                isValid = true;
+                            } else {
+                                error = "Parties non valides";
+                            }
+                        } else {
+                            error = "Partie droite pas assez divisée ou trop divisée";
+                        }
+                    } else {
+                        error = "Charactère interdit coté gauche";
+                    }
+                } else {
+                    error = "Pas de longueur correcte coté gauche";
+                }
+            } else {
+                error = "Pas de @";
+            }
+
+            document.getElementById("result").textContent = (isValid) ? "Email Valide" : "Email non valide : " + error;
+            return isValid
+        }
+
+    </script>
+
+
+</body>
+
+</html>
